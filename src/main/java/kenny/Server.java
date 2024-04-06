@@ -37,6 +37,7 @@ public class Server {
             if (serverSocket != null) {
                 try {
                     serverSocket.close();
+                    System.out.println("serverSocket is closed");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
