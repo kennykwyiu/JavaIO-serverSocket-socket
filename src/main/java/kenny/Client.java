@@ -5,6 +5,8 @@ import java.net.Socket;
 
 public class Client {
     public static void main(String[] args) {
+        final String QUIT_CLIENT = "quit";
+
         final String DEFAULT_SERVER_HOST = "127.0.0.1";
         final int DEFAULT_SERVER_PORT = 8888;
         Socket socket = null;
@@ -22,13 +24,21 @@ public class Client {
             BufferedReader consoleReader = new BufferedReader(
                     new InputStreamReader(System.in)
             );
-            String input = consoleReader.readLine();
 
-            writer.write(input + "\n");
-            writer.flush();
+            while (true) {
+                String input = consoleReader.readLine();
 
-            String msg = reader.readLine();
-            System.out.println(msg);
+                writer.write(input + "\n");
+                writer.flush();
+
+                String msg = reader.readLine();
+                System.out.println(msg);
+
+                // check is user quit
+                if (QUIT_CLIENT.equals(input)) {
+                    break;
+                }
+            }
 
 
         } catch (IOException e) {

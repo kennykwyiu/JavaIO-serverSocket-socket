@@ -6,6 +6,7 @@ import java.net.Socket;
 
 public class Server {
     public static void main(String[] args) {
+        final String QUIT_CLIENT = "quit";
         final int DEFAULT_PORT = 8888;
         ServerSocket serverSocket = null;
 
@@ -22,12 +23,16 @@ public class Server {
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(socket.getOutputStream())
                 );
-
-                String msg = reader.readLine();
-                if (msg != null) {
+                String msg = null;
+                while ((msg = reader.readLine()) != null) {
                     System.out.println("Client[" + socket.getPort() + "]: " + msg);
                     writer.write("Server: " + msg + "\n");
                     writer.flush();
+
+                    if (QUIT_CLIENT.equals(msg)) {
+                        System.out.println("Client[" + socket.getPort() + "] is disconnected");
+                        break;
+                    }
                 }
             }
 
